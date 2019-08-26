@@ -236,7 +236,7 @@ fn run(matches: &ArgMatches) -> Result<()> {
                     for block in block_map.values_mut() {
                         block.click(&event)?;
                     }
-                    util::print_blocks(&order, &block_map, &config)?;
+                    util::print_blocks(&order, &block_map)?;
             },
             // Receive async update requests
             recv(rx_update_requests) -> request => if let Ok(req) = request {
@@ -245,13 +245,13 @@ fn run(matches: &ArgMatches) -> Result<()> {
                     .get_mut(&req.id)
                     .internal_error("scheduler", "could not get required block")?
                     .update()?;
-                util::print_blocks(&order, &block_map, &config)?;
+                util::print_blocks(&order, &block_map)?;
             },
             // Receive update timer events
             recv(ttnu) -> _ => {
                 scheduler.do_scheduled_updates(&mut block_map)?;
                 // redraw the blocks, state changed
-                util::print_blocks(&order, &block_map, &config)?;
+                util::print_blocks(&order, &block_map)?;
             },
         }
 

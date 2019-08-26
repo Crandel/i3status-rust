@@ -22,8 +22,6 @@ impl TextWidget {
             state: State::Idle,
             rendered: json!({
                 "full_text": "",
-                "separator": false,
-                "separator_block_width": 0,
                 "background": "#000000",
                 "color": "#000000"
             }),
@@ -69,11 +67,9 @@ impl TextWidget {
         let (key_bg, key_fg) = self.state.theme_keys(&self.config.theme);
 
         self.rendered = json!({
-            "full_text": format!("{}{} ",
+            "full_text": format!("{}{}",
                                 self.icon.clone().unwrap_or_else(|| String::from(" ")),
                                 self.content.clone().unwrap_or_else(|| String::from(""))),
-            "separator": false,
-            "separator_block_width": 0,
             "background": key_bg.to_owned(),
             "color": key_fg.to_owned()
         });

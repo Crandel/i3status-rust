@@ -10,10 +10,8 @@ use std::process::Command;
 
 use regex::Regex;
 use serde::de::DeserializeOwned;
-use serde_json::value::Value;
 
 use crate::blocks::Block;
-use crate::config::Config;
 use crate::errors::*;
 
 pub const USR_SHARE_PATH: &str = "/usr/share/i3status-rust";
@@ -212,11 +210,7 @@ impl PrintState {
     }
 }
 
-pub fn print_blocks(
-    order: &[String],
-    block_map: &HashMap<String, &mut dyn Block>,
-    config: &Config,
-) -> Result<()> {
+pub fn print_blocks(order: &[String], block_map: &HashMap<String, &mut dyn Block>) -> Result<()> {
     let mut state = PrintState {
         has_predecessor: false,
         last_bg: None,
@@ -236,35 +230,31 @@ pub fn print_blocks(
             .as_str()
             .internal_error("util", "couldn't get background color")?;
 
-        let sep_fg = if config.theme.separator_fg == "auto" {
-            color
-        } else {
-            &config.theme.separator_fg
-        };
+        // let sep_fg = if config.theme.separator_fg == "auto" {
+        //     color
+        // } else {
+        //     &config.theme.separator_fg
+        // };
 
-        let sep_bg = if config.theme.separator_bg == "auto" {
-            state.last_bg.clone()
-        } else {
-            Some(config.theme.separator_bg.clone())
-        };
+        // let sep_bg = if config.theme.separator_bg == "auto" {
+        //     state.last_bg.clone()
+        // } else {
+        //     Some(config.theme.separator_bg.clone())
+        // };
 
-        let separator = json!({
-            "full_text": config.theme.separator,
-            "separator": false,
-            "separator_block_width": 0,
-            "background": match sep_bg {
-                Some(bg) => Value::String(bg),
-                None => Value::Null
-            },
-            "color": sep_fg,
-            "markup": "pango"
-        });
+        // let separator = json!({
+        //             "full_text": config.theme.separator,
+        //             "separator": false,
+        //             "separator_block_width": 0,
+        //             "background": if sep_bg.is_some() { Value::String(sep_bg.unwrap()) } else { Value::Null },
+        //             "color": sep_fg,
+        //             "markup": "pango"
+        //         });
         print!(
-            "{}{},",
+            "{}{}",
             if state.has_predecessor { "," } else { "" },
-            separator.to_string()
+            first.to_string()
         );
-        print!("{}", first.to_string());
         state.set_last_bg(color.to_owned());
         state.set_predecessor(true);
 

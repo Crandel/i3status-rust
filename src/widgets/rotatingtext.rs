@@ -41,8 +41,6 @@ impl RotatingTextWidget {
             state: State::Idle,
             rendered: json!({
                 "full_text": "",
-                "separator": false,
-                "separator_block_width": 0,
                 "background": "#000000",
                 "color": "#000000"
             }),
@@ -133,11 +131,9 @@ impl RotatingTextWidget {
         let (key_bg, key_fg) = self.state.theme_keys(&self.config.theme);
 
         self.rendered = json!({
-            "full_text": format!("{}{} ",
+            "full_text": format!("{}{}",
                                 self.icon.clone().unwrap_or_else(|| String::from(" ")),
                                 self.get_rotated_content()),
-            "separator": false,
-            "separator_block_width": 0,
             "min_width": if self.content == "" {"".to_string()} else {"0".repeat(self.width+self.icon.clone().unwrap_or_else(|| String::from(" ")).chars().count()+1)},
             "align": "left",
             "background": key_bg,

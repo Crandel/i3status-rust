@@ -24,8 +24,6 @@ impl ButtonWidget {
             id: String::from(id),
             rendered: json!({
                 "full_text": "",
-                "separator": false,
-                "separator_block_width": 0,
                 "background": "#000000",
                 "color": "#000000",
                 "markup": "pango"
@@ -78,12 +76,10 @@ impl ButtonWidget {
         let (key_bg, key_fg) = self.state.theme_keys(&self.config.theme);
 
         self.rendered = json!({
-            "full_text": format!("{}{} ",
-                                self.icon.clone().unwrap_or_else(|| String::from(" ")),
+            "full_text": format!("{}{}",
+                                self.icon.clone().unwrap_or_else(|| String::from("")),
                                 self.content.clone().unwrap_or_else(|| String::from(""))),
-            "separator": false,
             "name": self.id.clone(),
-            "separator_block_width": 0,
             "background": key_bg,
             "color": key_fg,
             "markup": "pango"
